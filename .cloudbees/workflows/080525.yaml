@@ -8,10 +8,10 @@ metadata:
     - name: Stage
       jobs:
         - job
-        - job1
     - name: Stage1
       jobs:
         - job2
+        - job1
 jobs:
   job1:
     steps:
@@ -19,9 +19,8 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
+    needs: job
   job:
-    needs:
-      - job1
     steps:
       - run: echo "hello world"
         uses: docker://golang:1.20.3-alpine3.17
@@ -29,6 +28,7 @@ jobs:
         shell: sh
   job2:
     needs:
+      - job1
       - job
     steps:
       - name: Say hello
