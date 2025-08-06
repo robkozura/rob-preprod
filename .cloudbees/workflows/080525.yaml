@@ -12,6 +12,7 @@ metadata:
       jobs:
         - job2
         - job1
+        - job3
 jobs:
   job1:
     steps:
@@ -35,3 +36,13 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         shell: sh
         run: echo "hello world"
+  job3:
+    needs:
+      - job2
+    steps:
+      - with:
+          bucket-name: asd
+          file-path: asd
+          s3-path: asd
+        uses: cloudbees-io/s3-upload-object@v1
+        name: test
