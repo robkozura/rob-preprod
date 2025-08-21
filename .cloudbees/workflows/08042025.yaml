@@ -5,6 +5,10 @@ on:
   workflow_dispatch: null
 metadata:
   stages/v1alpha1:
+    - name: Stage 3
+      jobs:
+        - job5
+        - job6
     - name: Stage 1
       jobs:
         - job1
@@ -14,10 +18,9 @@ metadata:
         - job3
         - job4
         - job7
-    - name: Stage 3
+    - name: Stage
       jobs:
-        - job5
-        - job6
+        - job
 jobs:
   job1:
     steps:
@@ -25,6 +28,7 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
+    needs: job6
   job2:
     needs: job1
     steps:
@@ -42,7 +46,9 @@ jobs:
         name: Say hello
         shell: sh
   job4:
-    needs: job3
+    needs:
+      - job3
+      - job2
     steps:
       - with:
           bucket-name: asd
@@ -50,7 +56,6 @@ jobs:
           s3-path: asd
         uses: cloudbees-io/s3-upload-object@v1
   job5:
-    needs: job7
     steps:
       - run: echo "hello world"
         uses: docker://golang:1.20.3-alpine3.17
@@ -66,8 +71,7 @@ jobs:
         uses: cloudbees-io/s3-upload-object@v1
         name: Say hello
   job7:
-    needs:
-      - job4
+    needs: job4
     steps:
       - with:
           bucket-name: asd
@@ -75,3 +79,10 @@ jobs:
           s3-path: asd
         uses: cloudbees-io/s3-upload-object@v1
         name: asd
+  job:
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
+    needs: job7
