@@ -48,7 +48,6 @@ jobs:
   job4:
     needs:
       - job3
-      - job2
     steps:
       - with:
           bucket-name: asd
