@@ -1,0 +1,98 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: My workflow
+on:
+  workflow_dispatch: null
+metadata:
+  stages/v1alpha1:
+    - name: Stage 1
+      jobs:
+        - job1
+        - job
+    - name: Stage
+      jobs:
+        - job2
+        - job3
+        - job4
+    - name: Stage1
+      jobs:
+        - new
+        - new2
+    - name: Stage2
+      jobs:
+        - new3
+        - new4
+jobs:
+  job1:
+    steps:
+      - run: echo "hello world"
+        uses: docker://golang:1.20.3-alpine3.17
+        name: Hello world
+        shell: sh
+  job:
+    needs: job1
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
+  job2:
+    needs: job
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
+  job3:
+    needs: job
+    steps:
+      - run: echo "hello world"
+        uses: docker://golang:1.20.3-alpine3.17
+        name: Say hello
+        shell: sh
+  job4:
+    needs: job3
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
+  new:
+    needs:
+      - job2
+      - job4
+    steps:
+      - with:
+          bucket-name: sdf
+          file-path: sdf
+          s3-path: sdf
+        uses: cloudbees-io/s3-upload-object@v1
+        name: sdf
+  new2:
+    needs: new
+    steps:
+      - with:
+          bucket-name: asd
+          file-path: asd
+          s3-path: asd
+        uses: cloudbees-io/s3-upload-object@v1
+        name: asd
+  new3:
+    needs: new2
+    steps:
+      - with:
+          bucket-name: asd
+          file-path: asd
+          s3-path: asd
+        uses: cloudbees-io/s3-upload-object@v1
+        name: asd
+  new4:
+    needs:
+      - new3
+    steps:
+      - with:
+          bucket-name: asd
+          file-path: asd
+          s3-path: asd
+        uses: cloudbees-io/s3-upload-object@v1
+        name: asd
