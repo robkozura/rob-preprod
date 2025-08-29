@@ -1,0 +1,42 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: testmanualapprovaljobs
+on:
+  workflow_dispatch: null
+metadata:
+  stages/v1alpha1:
+    - name: Stage 1
+      jobs:
+        - job1
+        - man
+    - name: Stage
+      jobs:
+        - job
+jobs:
+  job1:
+    steps:
+      - run: echo "hello world"
+        uses: docker://golang:1.20.3-alpine3.17
+        name: Hello world
+        shell: sh
+  job:
+    needs: man
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
+  man:
+    needs:
+      - job1
+    timeout-minutes: 4320
+    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
+    with:
+      disallowLaunchByUser: false
+      notifyAllEligibleUsers: false
+      approvalInputs: |
+        asd:
+          type: string
+          default: asd
+          required: true
+          description: asd
