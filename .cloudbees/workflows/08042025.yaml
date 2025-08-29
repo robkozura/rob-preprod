@@ -70,7 +70,8 @@ jobs:
         uses: cloudbees-io/s3-upload-object@v1
         name: Say hello
   job7:
-    needs: job4
+    needs:
+      - job2
     steps:
       - with:
           bucket-name: asd
@@ -79,9 +80,11 @@ jobs:
         uses: cloudbees-io/s3-upload-object@v1
         name: asd
   job:
+    needs:
+      - job7
+      - job4
     steps:
-      - name: Say hello
+      - run: echo "hello world"
         uses: docker://golang:1.20.3-alpine3.17
+        name: Say hello
         shell: sh
-        run: echo "hello world"
-    needs: job7
