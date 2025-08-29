@@ -1,0 +1,78 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: ReorderStageBug
+on:
+  workflow_dispatch: null
+metadata:
+  stages/v1alpha1:
+    - name: Stage 1
+      jobs:
+        - job1
+    - name: Stage
+      jobs:
+        - job
+    - name: Stage1
+      jobs:
+        - job2
+        - job3
+        - job6
+        - job4
+        - job5
+jobs:
+  job1:
+    steps:
+      - run: echo "hello world"
+        uses: docker://golang:1.20.3-alpine3.17
+        name: Hello world
+        shell: sh
+  job:
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
+    needs: job1
+  job2:
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
+    needs: job
+  job3:
+    steps:
+      - with:
+          bucket-name: a
+          file-path: b
+          s3-path: c
+        uses: cloudbees-io/s3-upload-object@v1
+        name: Say hello
+    needs: job
+  job4:
+    needs:
+      - job
+    steps:
+      - with:
+          bucket-name: a
+          file-path: a
+          s3-path: a
+        uses: cloudbees-io/s3-upload-object@v1
+        name: a
+  job5:
+    needs: job4
+    steps:
+      - with:
+          bucket-name: a
+          file-path: b
+          s3-path: c
+        uses: cloudbees-io/s3-upload-object@v1
+        name: Say hello
+  job6:
+    needs: job
+    steps:
+      - with:
+          bucket-name: a
+          file-path: a
+          s3-path: a
+        uses: cloudbees-io/s3-upload-object@v1
+        name: a
