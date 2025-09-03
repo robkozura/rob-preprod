@@ -23,15 +23,18 @@ metadata:
         - job
 jobs:
   job1:
+    needs:
+      - job6
+      - job5
     steps:
       - run: echo "hello world"
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
-    needs: job6
   job2:
     needs:
       - job6
+      - job5
     steps:
       - with:
           bucket-name: asd
@@ -64,7 +67,6 @@ jobs:
         name: Say hello
         shell: sh
   job6:
-    needs: job5
     steps:
       - with:
           bucket-name: asd
