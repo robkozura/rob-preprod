@@ -30,7 +30,8 @@ jobs:
         shell: sh
     needs: job6
   job2:
-    needs: job1
+    needs:
+      - job6
     steps:
       - with:
           bucket-name: asd
@@ -39,7 +40,9 @@ jobs:
         uses: cloudbees-io/s3-upload-object@v1
         name: Say hello
   job3:
-    needs: job2
+    needs:
+      - job2
+      - job1
     steps:
       - run: echo "hello world"
         uses: docker://golang:1.20.3-alpine3.17
