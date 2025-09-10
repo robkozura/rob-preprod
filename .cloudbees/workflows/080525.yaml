@@ -46,3 +46,6 @@ jobs:
           s3-path: asd
         uses: cloudbees-io/s3-upload-object@v1
         name: test
+env:
+  asd: asd
+  dff: gdfg
