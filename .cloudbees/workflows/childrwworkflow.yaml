@@ -15,4 +15,4 @@ jobs:
           echo "hello world"
   child:
     needs: build
-    uses: robkozura/rob-preprod/.cloudbees/GrandchildRWWorkflow.yaml
+    uses: robkozura/rob-preprod/.cloudbees/workflows/GrandchildRWWorkflow.yaml
