@@ -8,12 +8,13 @@ metadata:
     - name: Stage
       jobs:
         - job
-        - manual
     - name: Stage 1
       jobs:
         - job1
         - Parent-hi
         - job2
+        - job22
+        - job222
     - name: Stage1
       jobs:
         - job3
@@ -26,9 +27,9 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
-    needs: manual
+    needs: job
   job2:
-    needs: Parent-hi
+    needs: job222
     steps:
       - run: echo "hello world"
         uses: docker://golang:1.20.3-alpine3.17
@@ -41,21 +42,14 @@ jobs:
         shell: sh
         run: echo "hello world"
   job3:
-    needs: job2
+    needs:
+      - job222
+      - job22
     steps:
       - name: Say hello
         uses: docker://golang:1.20.3-alpine3.17
         shell: sh
         run: echo "hello world"
-  manual:
-    needs: job
-    timeout-minutes: 4320
-    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
-    with:
-      instructions: ""
-      disallowLaunchByUser: false
-      approvers: 7f5b8e40-03d4-11eb-9d67-42010a83ae35
-      notifyAllEligibleUsers: false
   Parent-hi:
     needs: job1
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
@@ -63,9 +57,23 @@ jobs:
     needs: job3
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
   job4:
-    needs:
-      - Parent-hi-3
+    needs: Parent-hi-3
     steps:
       - run: echo hello world
         uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+  job22:
+    needs: job2
+    steps:
+      - run: echo hello world
+        uses: docker://golang:1.20.3-alpine3.17
+        name: a
+        shell: sh
+  job222:
+    needs:
+      - Parent-hi
+    steps:
+      - run: echo hello world
+        uses: docker://golang:1.20.3-alpine3.17
+        name: a
         shell: sh
