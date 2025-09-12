@@ -11,8 +11,8 @@ metadata:
         - Parent1
     - name: Stage 1
       jobs:
-        - job1
         - Parent
+        - job1
         - job2
     - name: Stage1
       jobs:
@@ -25,12 +25,12 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
-    needs: Parent1
+    needs: Parent
   Parent:
-    needs: job1
+    needs: Parent1
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
   job2:
-    needs: Parent
+    needs: job1
     steps:
       - with:
           bucket-name: a
