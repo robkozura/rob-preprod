@@ -8,6 +8,7 @@ metadata:
     - name: Stage
       jobs:
         - job
+        - Parent1
     - name: Stage 1
       jobs:
         - job1
@@ -20,7 +21,7 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
-    needs: job
+    needs: Parent1
   Parent:
     needs: job1
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
@@ -34,9 +35,12 @@ jobs:
         uses: cloudbees-io/s3-upload-object@v1
         name: child
   job:
-    needs: []
     steps:
       - name: Say hello
         uses: docker://golang:1.20.3-alpine3.17
         shell: sh
         run: echo "hello world"
+  Parent1:
+    needs:
+      - job
+    uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
