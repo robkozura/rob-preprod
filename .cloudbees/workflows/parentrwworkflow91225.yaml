@@ -66,8 +66,6 @@ jobs:
     needs:
       - Parent-hi-3
     steps:
-      - with:
-          bucket-name: a
-          file-path: c
-          s3-path: v
-        uses: cloudbees-io/s3-upload-object@v1
+      - run: echo hello world
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
