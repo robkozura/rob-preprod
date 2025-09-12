@@ -8,6 +8,7 @@ metadata:
     - name: Stage 1
       jobs:
         - deploy-to-qa
+        - enable-feature-flags-qa
         - run-tests-qa
         - exit-criteria-qa
     - name: Stage
@@ -26,12 +27,12 @@ jobs:
   deploy-to-qa:
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
   run-tests-qa:
-    needs: deploy-to-qa
     steps:
       - run: echo hello world
         uses: docker://golang:1.20.3-alpine3.17
         name: a
         shell: sh
+    needs: enable-feature-flags-qa
   release-manager-approval:
     needs: exit-criteria-qa
     steps:
@@ -46,6 +47,13 @@ jobs:
     needs: deploy-to-staging
     steps:
       - run: echo hello world
+        uses: docker://golang:1.20.3-alpine3.17
+        name: a
+        shell: sh
+  enable-feature-flags-qa:
+    needs: deploy-to-qa
+    steps:
+      - run: hello world
         uses: docker://golang:1.20.3-alpine3.17
         name: a
         shell: sh
