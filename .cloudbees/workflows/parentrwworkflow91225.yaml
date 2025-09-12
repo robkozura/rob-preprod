@@ -5,6 +5,9 @@ on:
   workflow_dispatch: null
 metadata:
   stages/v1alpha1:
+    - name: Stage
+      jobs:
+        - job
     - name: Stage 1
       jobs:
         - job1
@@ -17,12 +20,12 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
+    needs: job
   Parent:
     needs: job1
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
   job2:
-    needs:
-      - Parent
+    needs: Parent
     steps:
       - with:
           bucket-name: a
@@ -30,3 +33,10 @@ jobs:
           s3-path: v
         uses: cloudbees-io/s3-upload-object@v1
         name: child
+  job:
+    needs: []
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
