@@ -9,6 +9,7 @@ metadata:
       jobs:
         - job1
         - job2
+        - rob3
 jobs:
   job1:
     steps:
@@ -17,6 +18,13 @@ jobs:
         name: Hello world
         shell: sh
   job2:
-    needs:
-      - job1
+    needs: job1
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
+  rob3:
+    needs:
+      - job2
+    steps:
+      - run: echo hello world
+        uses: docker://golang:1.20.3-alpine3.17
+        name: a
+        shell: sh
