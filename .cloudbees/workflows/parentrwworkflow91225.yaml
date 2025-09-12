@@ -11,13 +11,13 @@ metadata:
         - manual
     - name: Stage 1
       jobs:
-        - Parent
         - job1
+        - Parent-hi
         - job2
     - name: Stage1
       jobs:
         - job3
-        - Parent3
+        - Parent-hi-3
 jobs:
   job1:
     steps:
@@ -25,12 +25,8 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
-    needs: Parent
-  Parent:
     needs: manual
-    uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
   job2:
-    needs: job1
     steps:
       - with:
           bucket-name: a
@@ -38,6 +34,7 @@ jobs:
           s3-path: v
         uses: cloudbees-io/s3-upload-object@v1
         name: child
+    needs: Parent-hi
   job:
     steps:
       - name: Say hello
@@ -51,12 +48,8 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         shell: sh
         run: echo "hello world"
-  Parent3:
-    needs: job3
-    uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
   manual:
-    needs:
-      - job
+    needs: job
     timeout-minutes: 4320
     delegates: cloudbees-io/manual-approval/custom-job.yml@v1
     with:
@@ -64,3 +57,9 @@ jobs:
       disallowLaunchByUser: false
       approvers: 7f5b8e40-03d4-11eb-9d67-42010a83ae35
       notifyAllEligibleUsers: false
+  Parent-hi:
+    needs: job1
+    uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
+  Parent-hi-3:
+    needs: job3
+    uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
