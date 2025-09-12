@@ -10,6 +10,11 @@ metadata:
         - job1
         - job2
         - rob3
+    - name: Stage
+      jobs:
+        - job
+        - job5
+        - job4
 jobs:
   job1:
     steps:
@@ -21,10 +26,26 @@ jobs:
     needs: job1
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
   rob3:
-    needs:
-      - job2
+    needs: job2
     steps:
       - run: echo hello world
         uses: docker://golang:1.20.3-alpine3.17
         name: a
         shell: sh
+  job:
+    needs: rob3
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
+  job4:
+    steps:
+      - run: echo hello world
+        uses: docker://golang:1.20.3-alpine3.17
+        name: a
+        shell: sh
+    needs: job5
+  job5:
+    needs: job
+    uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
