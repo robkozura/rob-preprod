@@ -7,45 +7,45 @@ metadata:
   stages/v1alpha1:
     - name: Stage 1
       jobs:
-        - job1
-        - job2
-        - rob3
+        - deploy-to-qa
+        - run-tests-qa
+        - exit-criteria-qa
     - name: Stage
       jobs:
-        - job
-        - job5
-        - job4
+        - release-manager-approval
+        - deploy-to-staging
+        - enable-feature-flags-staging
 jobs:
-  job1:
+  exit-criteria-qa:
+    needs: run-tests-qa
     steps:
       - run: echo "hello world"
         uses: docker://golang:1.20.3-alpine3.17
         name: Hello world
         shell: sh
-  job2:
-    needs: job1
+  deploy-to-qa:
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
-  rob3:
-    needs: job2
+  run-tests-qa:
+    needs: deploy-to-qa
     steps:
       - run: echo hello world
         uses: docker://golang:1.20.3-alpine3.17
         name: a
         shell: sh
-  job:
-    needs: rob3
+  release-manager-approval:
+    needs: exit-criteria-qa
     steps:
-      - name: Say hello
+      - run: echo "hello world"
         uses: docker://golang:1.20.3-alpine3.17
+        name: Say hello
         shell: sh
-        run: echo "hello world"
-  job4:
+  deploy-to-staging:
+    needs: release-manager-approval
+    uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
+  enable-feature-flags-staging:
+    needs: deploy-to-staging
     steps:
       - run: echo hello world
         uses: docker://golang:1.20.3-alpine3.17
         name: a
         shell: sh
-    needs: job5
-  job5:
-    needs: job
-    uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
