@@ -19,4 +19,4 @@ jobs:
   Parent:
     needs:
       - job1
-    uses: robkozura/rob-preprod/.cloudbees/workflows/ChildRWWorkflow.yaml
+    uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
