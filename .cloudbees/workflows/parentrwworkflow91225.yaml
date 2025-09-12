@@ -9,6 +9,7 @@ metadata:
       jobs:
         - job1
         - Parent
+        - job2
 jobs:
   job1:
     steps:
@@ -17,6 +18,15 @@ jobs:
         name: Hello world
         shell: sh
   Parent:
-    needs:
-      - job1
+    needs: job1
     uses: robkozura/rob-preprod/.cloudbees/workflows/childrwworkflow.yaml
+  job2:
+    needs:
+      - Parent
+    steps:
+      - with:
+          bucket-name: a
+          file-path: c
+          s3-path: v
+        uses: cloudbees-io/s3-upload-object@v1
+        name: child
