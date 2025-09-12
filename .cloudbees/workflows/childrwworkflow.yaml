@@ -4,9 +4,9 @@ name: ChildRWWorkflow
 on:
   workflow_call:
 jobs:
-  child:
+  hackers-web:
     uses: robkozura/rob-preprod/.cloudbees/workflows/grandchildrwworkflow.yaml
-  child2:
+  hackers-auth:
     uses: robkozura/rob-preprod/.cloudbees/workflows/grandchildrwworkflow.yaml
-  child3:
+  hackers-api:
     uses: robkozura/rob-preprod/.cloudbees/workflows/grandchildrwworkflow.yaml
