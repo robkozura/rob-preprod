@@ -7,11 +7,24 @@ on:
       a:
         type: choice
         options:
-          - stag
-          - prod
-        default: stag
+          - "1"
+          - "2"
+        default: "1"
         required: true
         description: b
+      b:
+        type: choice
+        options:
+          - "1"
+          - "2"
+        default: "2"
+        required: true
+      c:
+        type: choice
+        options:
+          - "1"
+          - "2"
+        default: ""
 metadata:
   stages/v1alpha1:
     - name: Stage 1
