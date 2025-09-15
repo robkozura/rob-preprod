@@ -9,7 +9,7 @@ on:
         options:
           - stag
           - prod
-        default: ""
+        default: stag
         required: true
         description: b
 metadata:
