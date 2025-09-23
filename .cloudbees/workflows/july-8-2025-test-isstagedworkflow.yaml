@@ -8,6 +8,9 @@ metadata:
     - name: Prod
       jobs:
         - deploy-to-Prod
+    - name: Stage
+      jobs:
+        - job
 jobs:
   deploy-to-Prod:
     steps:
@@ -15,3 +18,11 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         shell: sh
         run: echo "Deploying to Prod"
+  job:
+    needs:
+      - deploy-to-Prod
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
