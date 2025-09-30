@@ -2,7 +2,12 @@ apiVersion: automation.cloudbees.io/v1alpha1
 kind: workflow
 name: july 8 2025 test isStagedWorkflow
 on:
-  workflow_dispatch: null
+  workflow_dispatch:
+    inputs:
+      aa:
+        type: string
+        default: aaa
+        description: aaa
 metadata:
   stages/v1alpha1:
     - name: Prod
