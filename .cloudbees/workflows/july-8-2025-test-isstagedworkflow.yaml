@@ -8,9 +8,6 @@ on:
         type: string
         default: aaa
         description: aaa
-  push:
-    branches:
-      - main
 metadata:
   stages/v1alpha1:
     - name: Prod
