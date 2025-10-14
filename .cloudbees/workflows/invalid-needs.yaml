@@ -10,6 +10,7 @@ metadata:
         - job1
 jobs:
   job1:
+    needs: job1
     steps:
       - run: echo "hello world"
         uses: docker://golang:1.20.3-alpine3.17
