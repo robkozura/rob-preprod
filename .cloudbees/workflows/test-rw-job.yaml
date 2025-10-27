@@ -1,0 +1,24 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: Test RW job
+on:
+  workflow_dispatch: null
+metadata:
+  stages/v1alpha1:
+    - name: Stage 1
+      jobs:
+        - job1
+        - jobname
+jobs:
+  job1:
+    steps:
+      - run: echo "hello world"
+        uses: docker://golang:1.20.3-alpine3.17
+        name: Hello world
+        shell: sh
+  jobname:
+    needs:
+      - job1
+    uses: abc/asd/.cloudbees/sdf.yaml
+    secrets:
+      hello: world
