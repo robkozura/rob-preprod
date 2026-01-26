@@ -3,6 +3,10 @@ kind: workflow
 name: july 8 2025 standardWorkflow
 on:
   workflow_dispatch:
+    inputs:
+      What:
+        type: string
+        required: true
 jobs:
   build:
     steps:
