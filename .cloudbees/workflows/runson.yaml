@@ -1,0 +1,18 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: RunsOn
+on:
+  workflow_dispatch:
+metadata:
+  stages/v1alpha1:
+    - name: Stage 1
+      jobs:
+        - job1
+jobs:
+  job1:
+    runs-on: stuff
+    steps:
+      - run: echo "hello world"
+        uses: docker://golang:1.20.3-alpine3.17
+        name: Hello world
+        shell: sh
