@@ -14,10 +14,10 @@ jobs:
     needs:
       - approve_me
   approve_me:
-    timeout-minutes: 4320
-    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
     with:
       instructions: ""
       disallowLaunchByUser: false
       approvers: 6c27cb54-d38b-11eb-861c-42010a83ae11
       notifyAllEligibleUsers: false
+    timeout-minutes: 2
+    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
