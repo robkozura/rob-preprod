@@ -7,7 +7,6 @@ jobs:
   build:
     runs-on:
       - self-hosted
-      - arch:arm64
     steps:
       - name: Say hello
         run: |
