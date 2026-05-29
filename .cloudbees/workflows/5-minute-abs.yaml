@@ -17,10 +17,8 @@ jobs:
       - TestJob
   TestJob:
     steps:
-      - with:
+      - name: Test
+        with:
           test-type: JUNIT
-        run: ""
+          results-path: "*.xml"
         uses: cloudbees-io/publish-test-results@v2
-        name: Test
-        env: {}
-        shell: ""
